@@ -22,7 +22,6 @@ parser.add_argument('--batch_size', type=int, default=128)
 parser.add_argument('--n_steps', type=int, default=4096)
 parser.add_argument('--n_epochs', type=int, default=10)
 parser.add_argument('--timesteps', type=int, default=1000000)
-parser.add_argument("--discount_factor", type=float, default=0.99)
 args = parser.parse_args()
 
 os.environ['WANDB_API_KEY']='4b31bcfdf4d66049adafff1725fe3c970f0ff013'
@@ -36,8 +35,7 @@ model = PPO('MlpPolicy', env, verbose=1,
             learning_rate=args.learning_rate, 
             batch_size=args.batch_size, 
             n_steps=args.n_steps, 
-            n_epochs=args.n_epochs, 
-            discount_factor = args.discount_factor,
+            n_epochs=args.n_epochs,
             tensorboard_log=f"runs/{run.id}",)
 
 wandb_callback = WandbCallback(
