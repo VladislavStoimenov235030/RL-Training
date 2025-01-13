@@ -25,7 +25,7 @@ parser.add_argument('--timesteps', type=int, default=1000000)
 parser.add_argument("--discount_factor", type=float, default=0.99)
 args = parser.parse_args()
 
-os.environ['WANDB_API_KEY']='1'
+os.environ['WANDB_API_KEY']='4b31bcfdf4d66049adafff1725fe3c970f0ff013'
 run = wandb.init(project='Experiment3', sync_tensorboard=True)
 
 
