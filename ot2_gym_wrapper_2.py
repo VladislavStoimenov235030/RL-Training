@@ -10,7 +10,7 @@ class OT2Env(gym.Env):
         self.max_steps = max_steps
 
         # Create the simulation environment
-        self.sim = Simulation(num_agents=1)
+        self.sim = Simulation(num_agents=1, render=render)
 
         # Define action and observation space
         # Action space: 3 continuous values representing movements along x, y, z within [-2, 2]
