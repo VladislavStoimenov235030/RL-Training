@@ -9,7 +9,7 @@ import wandb
 
 task = Task.init(
     project_name='Mentor Group D/Group 2',
-    task_name='Experiment_3_235030'
+    task_name='Experiment_4_235030'
 )
 #setting the base docker image
 task.set_base_docker('deanis/2023y2b-rl:latest')
@@ -22,6 +22,10 @@ parser.add_argument('--batch_size', type=int, default=128)
 parser.add_argument('--n_steps', type=int, default=4096)
 parser.add_argument('--n_epochs', type=int, default=10)
 parser.add_argument('--timesteps', type=int, default=1000000)
+parser.add_argument('--gamma', type=float, default=0.99)
+parser.add_argument('--clip_range', type=float, default=0.02)
+parser.add_argument('--ent_coef', type=float, default=0.1)
+parser.add_argument('--vf_coef', type=float, default=1)
 args = parser.parse_args()
 
 os.environ['WANDB_API_KEY']='4b31bcfdf4d66049adafff1725fe3c970f0ff013'
@@ -44,10 +48,9 @@ wandb_callback = WandbCallback(
     verbose=2
 )
 
-time_steps = 100000
 
 
-time_steps = 100000
+time_steps = 5000000
 for i in range(10):
     # add the reset_num_timesteps=False argument to the learn function to prevent the model from resetting the timestep counter
     # add the tb_log_name argument to the learn function to log the tensorboard data to the correct folder
