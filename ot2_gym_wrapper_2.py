@@ -68,19 +68,16 @@ class OT2Env(gym.Env):
 
         # Reward based on distance reduction
         delta_distance = self.previous_distance - distance_to_goal
-        reward = -distance_to_goal + (delta_distance * 2)  # Encourage moving closer to the goal
+        reward = -distance_to_goal * 2 + delta_distance * 3  # Encourage moving closer to the goal
+        reward -= 0.005 * np.linalg.norm(action)  # Penalize large movements
 
-        # Apply a small penalty for large actions to encourage efficiency
-        action_penalty = 0.01 * np.linalg.norm(action)
-        reward -= action_penalty
-
-        # Update the previous distance
-        self.previous_distance = distance_to_goal
+        # Add time-based penalty
+        reward -= 0.01 * self.steps
 
         # Check if the task is complete (distance below a threshold)
         if distance_to_goal < 0.1:  # Threshold based on pipette tip size
             terminated = True
-            reward += 10  # Positive reward for completing the task
+            reward += 30  # Positive reward for completing the task
         else:
             terminated = False
 
