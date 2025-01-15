@@ -69,7 +69,7 @@ class OT2Env(gym.Env):
         reward = -distance_to_goal * 0.5
 
         # Check if the task is complete (distance below a threshold)
-        if distance_to_goal < 1:  # Threshold based on pipette tip size
+        if distance_to_goal < 0.001:  # Threshold based on pipette tip size
             terminated = True
             reward += 50  # Positive reward for completing the task
         else:
