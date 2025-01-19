@@ -9,7 +9,7 @@ import wandb
 
 task = Task.init(
     project_name='Mentor Group D/Group 2',
-    task_name='Experiment_4_235030'
+    task_name='Experiment_6_235030'
 )
 #setting the base docker image
 task.set_base_docker('deanis/2023y2b-rl:latest')
@@ -44,7 +44,7 @@ model = PPO('MlpPolicy', env, verbose=1,
 
 wandb_callback = WandbCallback(
     model_save_freq=10000,
-    model_save_path=f'models/{run.id}',
+    model_save_path=f'models_last/{run.id}_last',
     verbose=2
 )
 
@@ -56,10 +56,10 @@ for i in range(10):
     # add the tb_log_name argument to the learn function to log the tensorboard data to the correct folder
     model.learn(total_timesteps=time_steps, callback=wandb_callback, progress_bar=True, reset_num_timesteps=False,tb_log_name=f"runs/{run.id}")
     # save the model to the models folder with the run id and the current timestep
-    model.save(f"models/{run.id}/{time_steps*(i+1)}")
+    model.save(f"models_last/{run.id}_last/{time_steps*(i+1)}")
 
 # Final save
-model.save(f"models/{run.id}/final_model")
+model.save(f"models/{run.id}_last/final_model")
 env.close()
 
 # End the Wandb run
