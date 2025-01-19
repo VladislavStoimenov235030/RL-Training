@@ -31,6 +31,9 @@ args = parser.parse_args()
 os.environ['WANDB_API_KEY']='4b31bcfdf4d66049adafff1725fe3c970f0ff013'
 run = wandb.init(project='Experiment3', sync_tensorboard=True)
 
+# Ensure necessary directories exist
+os.makedirs(f"models/{run.id}_last", exist_ok=True)
+os.makedirs(f"models_last/{run.id}_last", exist_ok=True)
 
 
 env = OT2Env(render=False, max_steps=1000)
@@ -57,10 +60,16 @@ for i in range(10):
     model.learn(total_timesteps=time_steps, callback=wandb_callback, progress_bar=True, reset_num_timesteps=False,tb_log_name=f"runs/{run.id}")
     # save the model to the models folder with the run id and the current timestep
     model.save(f"models_last/{run.id}_last/{time_steps*(i+1)}")
+    # Upload the intermediate model to ClearML
+    task.upload_artifact(name=f"model_step_{time_steps * (i + 1)}", artifact_object=intermediate_model_path)
 
 # Final save
-model.save(f"models/{run.id}_last/final_model")
-env.close()
+final_model_path = f"models/{run.id}_last/final_model"
+model.save(final_model_path)
 
-# End the Wandb run
+# Upload the final model to ClearML
+task.upload_artifact(name="final_model", artifact_object=final_model_path)
+
+# Close the environment and end the WandB run
+env.close()
 wandb.finish()
